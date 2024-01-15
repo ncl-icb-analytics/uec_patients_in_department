@@ -1,25 +1,39 @@
-# NCL sample project folder
+# UEC Patients in Department
 
-This git repository contains a shell that should be used as the default structure for new projects
-in the analytical team.  It won't fit all circumstances perfectly, and you can make changes and issue a 
-pull request for new features / changes.
+This is a python script to maintain and update the [Data_Lab_NCL_Dev].[JakeK].[uec_patients_in_department_dev] table in the SQL Sandpit. This table contains the mean number of patients in A&E conveyed via ambulance and the mean number of arrivals to A&E per hour.
 
-The aim of this template is two-fold: firstly to give a common structure for analytical projects to aid
-reproducibility, secondly to allow for additional security settings as default to prevent accidental upload of files that should not be committed to Git and GitHub.
+The intention is the run the script monthly to update the table with new data.
 
-__Please update/replace this README file with one relevant to your project__
+[UEC Patients in Department](#uec-patients-in-department)
 
-## To use this template, please use the following practises:
+## History ## 
+### [1.0] - 15/01/2024 ###
+* Initial code from base request
 
-* Put any data files in the `data` folder.  This folder is explicitly named in the .gitignore file.  A further layer of security is that all xls, xlsx, csv and pdf files are also explicit ignored in the whole folder as well.  ___If you need to commit one of these files, you must use the `-f` (force) command in `commit`, but you must be sure there is no identifiable data.__
-* Save any documentation in the `docs` file.  This does not mean you should avoid commenting your code, but if you have an operating procedure or supporting documents, add them to this folder.
-* Please save all output: data, formatted tables, graphs etc. in the output folder.  This is also implicitly ignored by git, but you can use the `-f` (force) command in `commit` to add any you wish to publish to github.
+## Output ##
+This an explanation of the columns in the output table:
 
+**date_weekstarting**: _Date_ \
+The date of Monday (start of week) for a given week in the table
 
-### Please also consider the following:
-* Linting your code.  This is a formatting process that follows a rule set.  We broadly encourage the tidyverse standard, and recommend the `lintr` package.
-* Comment your code to make sure others can follow.
-* Consider your naming conventions: we recommend `snake case` where spaces are replaced by underscores and no capitals are use. E.g. `outpatient_referral_data`
+**date_weekending**: _Date_ \
+The date of Sunday (end of week) for a given week in the table
 
+**fin_year**: _Char(7)_ \
+The financial year for a given week (row) in the format yyyy-zz
 
-This repository is dual licensed under the [Open Government v3]([https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) & MIT. All code can outputs are subject to Crown Copyright.
+**month**: _Char(3)_ \
+The month for a given week (row) in the format mmm
+
+**site_code**: _Char(5)_ \
+The code for the site. Sites include "RAL26", "RKEQ4", "RAL01", "RRV03", "RAPNM".
+
+**patients_mean**: _Float_ \
+The mean number of patients (per hour) in A&E that were conveyed via ambulance for a given week and site. A patient is considered to be in A&E for a given hour if they spend any amount of time in A&E during that hour.
+
+**arrivals_mean**: _Float_ \
+The mean number of ambulance arrivals for a given week and site.
+
+**completeness**: _Float_ \
+The percentage of days in a week where there is data for a given site. A value of 1 implies that every hour for a given week and site has a record of at least 1 patient in A&E. A value <1 may imply there were no patients in A&E for some period instead of a data quality issue.
+
