@@ -7,8 +7,7 @@
 .quarto
 
 # Exclude the following directories 
-/data/
-/output/
+.env
 
 # Exclude data file types
 *.doc
